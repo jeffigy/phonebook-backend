@@ -58,7 +58,7 @@ app.post("/api/persons", (req, res) => {
     })
     .catch((error) => {
       console.error(error);
-      res.status(500).json({ error: "Internal server error" });
+      res.status(500).json({ error: error });
     });
 });
 
@@ -90,7 +90,10 @@ app.put("/api/persons", (req, res, next) => {
         const person = {
           number: number,
         };
-        Person.findByIdAndUpdate(result.id, person, { new: true })
+        Person.findByIdAndUpdate(result.id, person, {
+          new: true,
+          runValidators: true,
+        })
           .then((updatedPerson) => {
             res.json(updatedPerson);
           })
